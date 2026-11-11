@@ -1,0 +1,48 @@
+<main class="container py-5">
+   
+    <div class="card p-4 p-md-5 shadow border-0 rounded-4">
+        <h1 class="mb-4">Billetera Digital</h1>
+        
+        <div class="row g-4">
+           
+            <div class="col-md-7">
+                
+                <div class="card mb-4 p-4 text-center border-0 shadow-sm" style="background: var(--upn-yellow-soft);">
+                    <p class="eyebrow mb-1">Saldo disponible</p>
+                    <h2 class="display-4 fw-bold mb-0">
+                        <!-- Le coloco esto para que funcione según moneda peruana (S/) -->
+                        {{ saldo() | currency:'PEN':'symbol-narrow':'1.2-2':'en-US' }}
+                    </h2>
+                </div>
+
+                <h3 class="fs-5 fw-bold mb-3">Movimientos</h3>
+                
+                @if (historial().length === 0) {
+                    <p class="text-muted">Aún no hay movimientos</p>
+                } @else {
+                    <ul class="list-group list-group-flush">
+                        @for (mov of historial(); track $index) {
+                            <li class="list-group-item d-flex justify-content-between align-items-center py-3 bg-transparent">
+                                <span class="pill" 
+                                      [ngClass]="mov.tipo === 'Recarga' ? 'pill-ok' : 'pill-no'">
+                                    {{ mov.tipo }}
+                                </span>
+                                <strong [ngClass]="mov.tipo === 'Recarga' ? 'text-success' : 'text-danger'">
+                                    {{ mov.tipo === 'Recarga' ? '+' : '-' }}{{ mov.monto | currency:'PEN':'symbol-narrow':'1.2-2':'en-US' }}
+                                </strong>
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+
+            
+            <div class="col-md-5">
+                <app-nuevo-movimiento 
+                    [saldoActual]="saldo()" 
+                    (movimientoValido)="procesarMovimiento($event)">
+                </app-nuevo-movimiento>
+            </div>
+        </div>
+    </div>
+</main>
