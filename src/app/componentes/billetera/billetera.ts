@@ -14,14 +14,14 @@ export class Billetera {
   historial = signal<Movimiento[]>([]);
 
   procesarMovimiento(movimiento: Movimiento) {
-    // Actualizar saldo
+   
     if (movimiento.tipo === 'Recarga') {
       this.saldo.update(s => s + movimiento.monto);
     } else if (movimiento.tipo === 'Gasto') {
       this.saldo.update(s => s - movimiento.monto);
     }
 
-    // Agregar al inicio del historial
+   
     this.historial.update(lista => [movimiento, ...lista]);
   }
 }
